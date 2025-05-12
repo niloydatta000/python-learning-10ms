@@ -1,0 +1,91 @@
+# Use Google Colab
+
+This is just a plain text manual for data scraping by not actual `.ipynb` file.
+
+!pip install beautifulsoap4 # ! symbol is used to install external libraries on .ipynb type files.
+
+
+
+
+from bs4 import BeautifulSoap
+import requests
+
+
+
+
+
+response = requests.get('URL')
+
+
+
+
+
+"""Google Colab and Jupyter Notebook don't need print() for single output just put variable, it will be printed automatically"""
+
+response.content # This will collect whole html code and printed
+
+
+doc = BeautifulSoap(response.content, 'html.parser')
+
+
+
+
+
+
+doc.find_all('a') # This will find all 'a' tags.
+'''To find inside a tag put its parameter. If it clashes with python keyword put an underscore(_) after it.'''
+
+
+
+
+
+
+vars = doc.find_all(parameter_='parameter_name')
+
+
+
+
+
+# Example:
+scrape_data = []
+for var in vars:
+	data = {'data_type' : var.find(class_='text').string}
+	scrape_data.append(data)
+
+
+
+
+
+
+
+!pip install pandas
+
+
+import pandas as pd
+from google.colab import files
+import io # io = input-output
+
+
+
+
+
+
+df = pd.DataFrame(scrape_data)
+
+
+
+
+
+
+
+df.head() # It will show a preview
+
+
+
+
+df.to_excel('/content/file_name.xlsx', index=False)
+
+
+
+
+"""Excel file is ready."""
